@@ -7,7 +7,9 @@ import styles from './style/index.module.less';
 import CardBlock from './card-block';
 import AddCard from './card-add';
 import { QualityInspection, BasicCard } from './interface';
-import './mock';
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+  import('./mock');
+}
 
 const { Title } = Typography;
 const { Row, Col } = Grid;
@@ -39,7 +41,7 @@ export default function ListCard() {
   7;
   const getCardList = (
     list: Array<BasicCard & QualityInspection>,
-    type: keyof typeof data
+    type: keyof typeof data,
   ) => {
     return (
       <Row gutter={24} className={styles['card-content']}>

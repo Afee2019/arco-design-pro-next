@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Spin, Typography } from '@arco-design/web-react';
-import { DonutChart } from 'bizcharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Legend,
+  Tooltip,
+} from 'recharts';
 import axios from 'axios';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
@@ -15,7 +22,9 @@ function PopularContent() {
     axios
       .get('/api/workplace/content-percentage')
       .then((res) => {
-        setData(res.data);
+        // 确保返回的是数组
+        const responseData = res.data?.data || res.data || [];
+        setData(Array.isArray(responseData) ? responseData : []);
       })
       .finally(() => {
         setLoading(false);
@@ -32,54 +41,60 @@ function PopularContent() {
         {t['workplace.contentPercentage']}
       </Typography.Title>
       <Spin loading={loading} style={{ display: 'block' }}>
-        <DonutChart
-          autoFit
-          height={340}
-          data={data}
-          radius={0.7}
-          innerRadius={0.65}
-          angleField="count"
-          colorField="type"
-          color={['#21CCFF', '#313CA9', '#249EFF']}
-          interactions={[
-            {
-              type: 'element-single-selected',
-            },
-          ]}
-          tooltip={{ showMarkers: false }}
-          label={{
-            visible: true,
-            type: 'spider',
-            formatter: (v) => `${(v.percent * 100).toFixed(0)}%`,
-            style: {
-              fill: '#86909C',
-              fontSize: 14,
-            },
-          }}
-          legend={{
-            position: 'bottom',
-          }}
-          statistic={{
-            title: {
-              style: {
-                fontSize: '14px',
-                lineHeight: 2,
-                color: 'rgb(--var(color-text-1))',
-              },
-              formatter: () => '内容量',
-            },
-            content: {
-              style: {
-                fontSize: '16px',
-                color: 'rgb(--var(color-text-1))',
-              },
-              formatter: (_, data) => {
-                const sum = data.reduce((a, b) => a + b.count, 0);
-                return Number(sum).toLocaleString();
-              },
-            },
-          }}
-        />
+        <div style={{ position: 'relative' }}>
+          <ResponsiveContainer width="100%" height={340}>
+            <PieChart>
+              <Pie
+                data={data}
+                cx="50%"
+                cy="50%"
+                innerRadius={110}
+                outerRadius={140}
+                paddingAngle={5}
+                dataKey="count"
+                label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
+              >
+                {Array.isArray(data) &&
+                  data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={['#21CCFF', '#313CA9', '#249EFF'][index % 3]}
+                    />
+                  ))}
+              </Pie>
+              <Tooltip
+                formatter={(value, name, props) => [
+                  Number(value).toLocaleString(),
+                  props.payload.type,
+                ]}
+              />
+              <Legend
+                verticalAlign="bottom"
+                height={36}
+                formatter={(value, entry: any) => entry.payload.type}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+          <div
+            style={{
+              position: 'absolute',
+              top: '40%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              textAlign: 'center',
+              pointerEvents: 'none',
+            }}
+          >
+            <div style={{ fontSize: '14px', color: '#86909C', lineHeight: 2 }}>
+              内容量
+            </div>
+            <div style={{ fontSize: '16px', color: '#1D2129' }}>
+              {Array.isArray(data) && data.length > 0
+                ? Number(data.reduce((a, b) => a + b.count, 0)).toLocaleString()
+                : '0'}
+            </div>
+          </div>
+        </div>
       </Spin>
     </Card>
   );

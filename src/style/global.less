@@ -12,31 +12,38 @@ body {
 }
 
 .chart-wrapper {
-  .bizcharts-tooltip {
-    background: linear-gradient(
-      304.17deg,
-      rgb(253 254 255 / 60%) -6.04%,
-      rgb(244 247 252 / 60%) 85.2%
-    ) !important;
-    border-radius: 6px;
-    backdrop-filter: blur(10px);
-    padding: 8px !important;
-    width: 180px !important;
-    opacity: 1 !important;
+  .recharts-tooltip-wrapper {
+    .recharts-default-tooltip {
+      background: linear-gradient(
+        304.17deg,
+        rgb(253 254 255 / 60%) -6.04%,
+        rgb(244 247 252 / 60%) 85.2%
+      ) !important;
+      border-radius: 6px;
+      backdrop-filter: blur(10px);
+      padding: 8px !important;
+      width: 180px !important;
+      opacity: 1 !important;
+      border: none !important;
+    }
   }
 }
 
 body[arco-theme='dark'] {
   .chart-wrapper {
-    .bizcharts-tooltip {
-      background: linear-gradient(
-        304.17deg,
-        rgba(90, 92, 95, 60%) -6.04%,
-        rgba(87, 87, 87, 60%) 85.2%
-      ) !important;
-      backdrop-filter: blur(10px);
-      border-radius: 6px;
-      box-shadow: none !important;
+    .recharts-tooltip-wrapper {
+      .recharts-default-tooltip {
+        background: linear-gradient(
+          304.17deg,
+          rgba(90, 92, 95, 60%) -6.04%,
+          rgba(87, 87, 87, 60%) 85.2%
+        ) !important;
+        backdrop-filter: blur(10px);
+        border-radius: 6px;
+        box-shadow: none !important;
+        border: none !important;
+        color: var(--color-text-1) !important;
+      }
     }
   }
 }

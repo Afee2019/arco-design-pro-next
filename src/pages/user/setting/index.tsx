@@ -6,7 +6,9 @@ import locale from './locale';
 import InfoHeader from './header';
 import InfoForm from './info';
 import Security from './security';
-import './mock';
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+  import('./mock');
+}
 import Verified from './verified';
 
 function UserInfo() {

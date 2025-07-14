@@ -1,7 +1,14 @@
 import React from 'react';
-import { Chart, Line, Axis, Area, Tooltip } from 'bizcharts';
+import {
+  ResponsiveContainer,
+  Area,
+  AreaChart,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from 'recharts';
 import { Spin } from '@arco-design/web-react';
-import CustomTooltip from './customer-tooltip';
 
 function OverviewAreaLine({
   data,
@@ -16,66 +23,62 @@ function OverviewAreaLine({
 }) {
   return (
     <Spin loading={loading} style={{ width: '100%' }}>
-      <Chart
-        scale={{ value: { min: 0 } }}
-        padding={[10, 20, 50, 40]}
-        autoFit
-        height={300}
-        data={data}
-        className={'chart-wrapper'}
-      >
-        <Axis
-          name="count"
-          title
-          grid={{
-            line: {
-              style: {
-                lineDash: [4, 4],
-              },
-            },
-          }}
-          label={{
-            formatter(text) {
-              return `${Number(text) / 1000}k`;
-            },
-          }}
-        />
-        <Axis name="date" grid={{ line: { style: { stroke: '#E5E8EF' } } }} />
-        <Line
-          shape="smooth"
-          position="date*count"
-          size={3}
-          color="l (0) 0:#1EE7FF .57:#249AFF .85:#6F42FB"
-        />
-        <Area
-          position="date*count"
-          shape="smooth"
-          color="l (90) 0:rgba(17, 126, 255, 0.5)  1:rgba(17, 128, 255, 0)"
-        />
-        <Tooltip
-          showCrosshairs={true}
-          showMarkers={true}
-          marker={{
-            lineWidth: 3,
-            stroke: color,
-            fill: '#ffffff',
-            symbol: 'circle',
-            r: 8,
-          }}
+      <ResponsiveContainer width="100%" height={300}>
+        <AreaChart
+          data={data}
+          margin={{ top: 10, right: 20, left: 40, bottom: 50 }}
         >
-          {(title, items) => {
-            return (
-              <CustomTooltip
-                title={title}
-                data={items}
-                color={color}
-                name={name}
-                formatter={(value) => Number(value).toLocaleString()}
+          <defs>
+            <linearGradient id="colorArea" x1="0" y1="0" x2="0" y2="1">
+              <stop
+                offset="0%"
+                stopColor="rgba(17, 126, 255, 0.5)"
+                stopOpacity={1}
               />
-            );
-          }}
-        </Tooltip>
-      </Chart>
+              <stop
+                offset="100%"
+                stopColor="rgba(17, 128, 255, 0)"
+                stopOpacity={0}
+              />
+            </linearGradient>
+            <linearGradient id="colorLine" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#1EE7FF" />
+              <stop offset="57%" stopColor="#249AFF" />
+              <stop offset="85%" stopColor="#6F42FB" />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="4 4" stroke="#E5E8EF" />
+          <XAxis
+            dataKey="date"
+            axisLine={{ stroke: '#E5E8EF' }}
+            tickLine={{ stroke: '#E5E8EF' }}
+          />
+          <YAxis
+            tickFormatter={(value) => `${Number(value) / 1000}k`}
+            axisLine={{ stroke: '#E5E8EF' }}
+            tickLine={{ stroke: '#E5E8EF' }}
+          />
+          <Tooltip
+            formatter={(value) => [Number(value).toLocaleString(), name]}
+            labelStyle={{ color: '#1D2129' }}
+            contentStyle={{
+              backgroundColor: 'white',
+              border: '1px solid #E5E8EF',
+              borderRadius: '4px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            }}
+          />
+          <Area
+            type="monotone"
+            dataKey="count"
+            stroke="url(#colorLine)"
+            strokeWidth={3}
+            fill="url(#colorArea)"
+            dot={{ r: 4, fill: color, stroke: '#ffffff', strokeWidth: 2 }}
+            activeDot={{ r: 6, fill: color, stroke: '#ffffff', strokeWidth: 3 }}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
     </Spin>
   );
 }

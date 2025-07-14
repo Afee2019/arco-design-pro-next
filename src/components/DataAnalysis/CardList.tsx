@@ -8,22 +8,24 @@ import {
   Skeleton,
 } from '@arco-design/web-react';
 import cs from 'classnames';
-import { Chart, Line, Interval, Tooltip, Interaction } from 'bizcharts';
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  Tooltip,
+} from 'recharts';
 import axios from 'axios';
 import useLocale from '@/utils/useLocale';
-import locale from './locale';
+import locale from '@/pages/visualization/multi-dimension-data-analysis/locale';
 
 import { IconArrowRise, IconArrowFall } from '@arco-design/web-react/icon';
-import styles from './style/card-block.module.less';
+import styles from '@/pages/visualization/multi-dimension-data-analysis/style/card-block.module.less';
 
 const { Row, Col } = Grid;
 const { Title, Text } = Typography;
-const basicChartProps = {
-  pure: true,
-  autoFit: true,
-  height: 80,
-  padding: [0, 10, 0, 10],
-};
+// Recharts 不需要这些基础配置
 
 export interface CardProps {
   key: string;
@@ -36,13 +38,15 @@ export interface CardProps {
   loading?: boolean;
 }
 
-function CustomTooltip(props: { items: any[] }) {
-  const { items } = props;
+function CustomTooltip(props: { payload?: any[] }) {
+  const { payload } = props;
+  if (!payload || payload.length === 0) return null;
+
   return (
     <div className={styles.tooltip}>
-      {items.map((item, index) => (
+      {payload.map((item, index) => (
         <div key={index}>
-          <Text bold>{Number(item.data.y).toLocaleString()}</Text>
+          <Text bold>{Number(item.value).toLocaleString()}</Text>
         </div>
       ))}
     </div>
@@ -50,41 +54,60 @@ function CustomTooltip(props: { items: any[] }) {
 }
 function SimpleLine(props: { chartData: any[] }) {
   const { chartData } = props;
+
+  const renderTooltip = (props: any) => {
+    if (props.active && props.payload) {
+      return <CustomTooltip payload={props.payload} />;
+    }
+    return null;
+  };
+
   return (
-    <Chart data={chartData} {...basicChartProps}>
-      <Line
-        position="x*y"
-        shape={['name', ['smooth', 'dash']]}
-        color={['name', ['#165DFF', 'rgba(106,161,255,0.3)']]}
-      />
-      <Tooltip shared={false} showCrosshairs={true}>
-        {(_, items) => <CustomTooltip items={items} />}
-      </Tooltip>
-    </Chart>
+    <ResponsiveContainer width="100%" height={80}>
+      <LineChart
+        data={chartData}
+        margin={{ top: 0, right: 10, left: 10, bottom: 0 }}
+      >
+        <Line
+          type="monotone"
+          dataKey="y"
+          stroke="#165DFF"
+          strokeWidth={2}
+          dot={false}
+          strokeDasharray="5 5"
+        />
+        <Tooltip content={renderTooltip} />
+      </LineChart>
+    </ResponsiveContainer>
   );
 }
 
 function SimpleInterval(props: { chartData: any[] }) {
   const { chartData } = props;
+
+  const renderTooltip = (props: any) => {
+    if (props.active && props.payload) {
+      return <CustomTooltip payload={props.payload} />;
+    }
+    return null;
+  };
+
+  // 为数据添加颜色
+  const dataWithColors = chartData.map((item, index) => ({
+    ...item,
+    fill: index % 2 === 0 ? '#86DF6C' : '#468DFF',
+  }));
+
   return (
-    <Chart data={chartData} {...basicChartProps}>
-      <Interval
-        position="x*y"
-        color={[
-          'x',
-          (xVal) => {
-            if (Number(xVal) % 2 === 0) {
-              return '#86DF6C';
-            }
-            return '#468DFF';
-          },
-        ]}
-      />
-      <Tooltip shared={false}>
-        {(_, items) => <CustomTooltip items={items} />}
-      </Tooltip>
-      <Interaction type="active-region" />
-    </Chart>
+    <ResponsiveContainer width="100%" height={80}>
+      <BarChart
+        data={dataWithColors}
+        margin={{ top: 0, right: 10, left: 10, bottom: 0 }}
+      >
+        <Bar dataKey="y" />
+        <Tooltip content={renderTooltip} />
+      </BarChart>
+    </ResponsiveContainer>
   );
 }
 
@@ -161,36 +184,55 @@ function CardList() {
     cardInfo.map((item) => ({
       ...item,
       chartType: item.type,
-    }))
+    })),
   );
 
   const getData = async () => {
-    const requestList = cardInfo.map(async (info) => {
-      const { data } = await axios
-        .get(`/api/multi-dimension/card?type=${info.type}`)
-        .catch(() => ({ data: {} }));
-      return {
-        ...data,
-        key: info.key,
-        chartType: info.type,
-      };
-    });
+    if (typeof window === 'undefined') return;
 
     setLoading(true);
-    const result = await Promise.all(requestList).finally(() =>
-      setLoading(false)
-    );
-    setData(result);
+    try {
+      const requestList = cardInfo.map(async (info) => {
+        try {
+          const { data } = await axios.get(
+            `/api/multi-dimension/card?type=${info.type}`,
+          );
+          return {
+            ...data,
+            key: info.key,
+            chartType: info.type,
+          };
+        } catch (error) {
+          console.error(`Failed to fetch card data for ${info.type}:`, error);
+          return {
+            key: info.key,
+            chartType: info.type,
+            count: 0,
+            increment: false,
+            diff: 0,
+            chartData: [],
+          };
+        }
+      });
+      const result = await Promise.all(requestList);
+      setData(result);
+    } catch (error) {
+      console.error('Failed to fetch card list data:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    getData();
+    if (typeof window !== 'undefined') {
+      getData();
+    }
   }, []);
 
   const formatData = useMemo(() => {
     return data.map((item) => ({
       ...item,
-      title: t[`multiDAnalysis.cardList.${item.key}`],
+      title: t[`multiDAnalysis.cardList.${item.key}`] || item.key,
     }));
   }, [t, data]);
 

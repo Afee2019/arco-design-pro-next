@@ -6,7 +6,6 @@ import locale from './locale';
 import PublicOpinion from './public-opinion';
 import MultiInterval from '@/components/Chart/multi-stack-interval';
 import PeriodLine from '@/components/Chart/period-legend-line';
-import './mock';
 
 const { Row, Col } = Grid;
 
@@ -18,25 +17,51 @@ function DataAnalysis() {
   const [chartData, setChartData] = useState([]);
   const [tableData, setTableData] = useState([]);
 
+  // 条件导入mock
+  useEffect(() => {
+    if (
+      typeof window !== 'undefined' &&
+      process.env.NODE_ENV === 'development'
+    ) {
+      import('./mock');
+    }
+  }, []);
+
   const getChartData = async () => {
+    if (typeof window === 'undefined') return;
+
     setLoading(true);
-    const { data } = await axios
-      .get('/api/data-analysis/content-publishing')
-      .finally(() => setLoading(false));
-    setChartData(data);
+    try {
+      const { data } = await axios.get('/api/data-analysis/content-publishing');
+      setChartData(data || []);
+    } catch (error) {
+      console.error('Failed to fetch chart data:', error);
+      setChartData([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getTableData = async () => {
+    if (typeof window === 'undefined') return;
+
     setTableLoading(true);
-    const { data } = await axios
-      .get('/api/data-analysis/author-list')
-      .finally(() => setTableLoading(false));
-    setTableData(data.list);
+    try {
+      const { data } = await axios.get('/api/data-analysis/author-list');
+      setTableData(data?.list || []);
+    } catch (error) {
+      console.error('Failed to fetch table data:', error);
+      setTableData([]);
+    } finally {
+      setTableLoading(false);
+    }
   };
 
   useEffect(() => {
-    getChartData();
-    getTableData();
+    if (typeof window !== 'undefined') {
+      getChartData();
+      getTableData();
+    }
   }, []);
 
   const columns = useMemo(() => {

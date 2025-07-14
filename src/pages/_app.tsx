@@ -17,7 +17,14 @@ import checkLogin from '@/utils/checkLogin';
 import changeTheme from '@/utils/changeTheme';
 import useStorage from '@/utils/useStorage';
 import Layout from './layout';
-import '../mock';
+
+// 在客户端环境下初始化 Mock
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+  // 使用动态导入来确保 Mock 在客户端正确加载
+  Promise.resolve().then(() => {
+    import('../mock');
+  });
+}
 
 const store = createStore(rootReducer);
 

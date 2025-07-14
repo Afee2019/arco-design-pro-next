@@ -23,7 +23,7 @@ This is a Next.js-based Arco Design Pro admin dashboard built with TypeScript. T
 - **Redux** for state management
 - **Less** for styling with CSS modules
 - **Mock.js** for API mocking
-- **BizCharts** for data visualization
+- **Recharts** for data visualization
 
 ### Project Structure
 

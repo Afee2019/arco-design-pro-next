@@ -16,7 +16,11 @@ function Announcement() {
     axios
       .get('/api/workplace/announcement')
       .then((res) => {
-        setData(res.data);
+        setData(res.data.data || []);
+      })
+      .catch((error) => {
+        console.error('Failed to fetch announcement data:', error);
+        setData([]);
       })
       .finally(() => {
         setLoading(false);
@@ -50,14 +54,15 @@ function Announcement() {
       </div>
       <Skeleton loading={loading} text={{ rows: 5, width: '100%' }} animation>
         <div>
-          {data.map((d) => (
-            <div key={d.key} className={styles.item}>
-              <Tag color={getTagColor(d.type)} size="small">
-                {t[`workplace.${d.type}`]}
-              </Tag>
-              <span className={styles.link}>{d.content}</span>
-            </div>
-          ))}
+          {Array.isArray(data) &&
+            data.map((d) => (
+              <div key={d.id} className={styles.item}>
+                <Tag color={getTagColor(d.type)} size="small">
+                  {t[`workplace.${d.type}`]}
+                </Tag>
+                <span className={styles.link}>{d.content}</span>
+              </div>
+            ))}
         </div>
       </Skeleton>
     </Card>

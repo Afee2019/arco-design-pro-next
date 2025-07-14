@@ -27,7 +27,7 @@ function Setting(props: SettingProps) {
   return (
     <>
       {trigger ? (
-        React.cloneElement(trigger as React.ReactElement, {
+        React.cloneElement(trigger as React.ReactElement<any>, {
           onClick: () => setVisible(true),
         })
       ) : (

@@ -8,7 +8,11 @@ import Announcement from './announcement';
 import Carousel from './carousel';
 import Docs from './docs';
 import styles from './style/index.module.less';
-import './mock';
+
+// 在开发环境中导入 mock 数据
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+  import('./mock').catch(console.error);
+}
 
 const { Row, Col } = Grid;
 

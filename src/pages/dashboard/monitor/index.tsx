@@ -8,7 +8,9 @@ import StudioStatus from './studio-status';
 import QuickOperation from './quick-operation';
 import StudioInformation from './studio-information';
 import styles from './style/index.module.less';
-import './mock';
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+  import('./mock');
+}
 
 export default function Monitor() {
   const userInfo = useSelector((state: any) => state.userInfo);

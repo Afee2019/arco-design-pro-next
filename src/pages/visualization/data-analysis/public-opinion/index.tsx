@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import PublicOpinionCard, { PublicOpinionCardProps } from './card';
+import PublicOpinionCard, {
+  PublicOpinionCardProps,
+} from '@/components/DataAnalysis/PublicOpinionCard';
 import axios from 'axios';
 import { Grid } from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
@@ -33,35 +35,55 @@ function PublicOpinion() {
     cardInfo.map((item) => ({
       ...item,
       chartType: item.type as 'line' | 'pie' | 'interval',
-      title: t[`dataAnalysis.publicOpinion.${item.key}`],
-    }))
+      title: t[`dataAnalysis.publicOpinion.${item.key}`] || item.key,
+    })),
   );
 
   const getData = async () => {
-    const requestList = cardInfo.map(async (info) => {
-      const { data } = await axios
-        .get(`/api/data-analysis/overview?type=${info.type}`)
-        .catch(() => ({ data: {} }));
-      return {
-        ...data,
-        key: info.key,
-        chartType: info.type,
-      };
-    });
-    const result = await Promise.all(requestList).finally(() =>
-      setLoading(false)
-    );
-    setData(result);
+    if (typeof window === 'undefined') return;
+
+    try {
+      const requestList = cardInfo.map(async (info) => {
+        try {
+          const { data } = await axios.get(
+            `/api/data-analysis/overview?type=${info.type}`,
+          );
+          return {
+            ...data,
+            key: info.key,
+            chartType: info.type,
+          };
+        } catch (error) {
+          console.error(`Failed to fetch data for ${info.type}:`, error);
+          return {
+            key: info.key,
+            chartType: info.type,
+            count: 0,
+            increment: false,
+            diff: 0,
+            chartData: [],
+          };
+        }
+      });
+      const result = await Promise.all(requestList);
+      setData(result);
+    } catch (error) {
+      console.error('Failed to fetch public opinion data:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    getData();
+    if (typeof window !== 'undefined') {
+      getData();
+    }
   }, []);
 
   const formatData = useMemo(() => {
     return data.map((item) => ({
       ...item,
-      title: t[`dataAnalysis.publicOpinion.${item.key}`],
+      title: t[`dataAnalysis.publicOpinion.${item.key}`] || item.key,
     }));
   }, [t, data]);
 
@@ -72,7 +94,7 @@ function PublicOpinion() {
           <Col span={6} key={index}>
             <PublicOpinionCard
               {...item}
-              compareTime={t['dataAnalysis.yesterday']}
+              compareTime={t['dataAnalysis.yesterday'] || '昨日'}
               loading={loading}
             />
           </Col>
