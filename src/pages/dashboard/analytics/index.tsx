@@ -1,7 +1,8 @@
 import React from 'react';
-import { Typography, Card, Row, Col } from '@arco-design/web-react';
+import { Typography, Card, Grid } from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 
+const { Row, Col } = Grid;
 const { Title } = Typography;
 
 function Analytics() {
