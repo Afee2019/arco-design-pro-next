@@ -11,7 +11,6 @@ import {
 } from '@arco-design/web-react';
 import axios from 'axios';
 import useLocale from '@/utils/useLocale';
-import locale from './locale';
 import ProfileItem from './item';
 import styles from './style/index.module.less';
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
@@ -19,7 +18,7 @@ if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
 }
 
 function BasicProfile() {
-  const t = useLocale(locale);
+  const t = useLocale();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({ status: 1 });
   const [preLoading, setPreLoading] = useState(false);

@@ -1,18 +1,15 @@
 import { Table, Tag, Typography } from '@arco-design/web-react';
 import React from 'react';
-import useLocale from '@/utils/useLocale';
-import locale from './locale';
 import styles from './style/index.module.less';
 
 export default function QuickOperation() {
-  const t = useLocale(locale);
   const columns = [
     {
-      title: t['monitor.list.title.order'],
+      title: '排序',
       render: (_col, _record, index) => <span>{index + 1}</span>,
     },
     {
-      title: t['monitor.list.title.cover'],
+      title: '封面',
       dataIndex: 'cover',
       render: (_col, record) => (
         <div className={styles['data-statistic-list-cover-wrapper']}>
@@ -22,23 +19,23 @@ export default function QuickOperation() {
               color="red"
               className={styles['data-statistic-list-cover-tag']}
             >
-              {t['monitor.list.tag.auditFailed']}
+              审核失败
             </Tag>
           )}
         </div>
       ),
     },
     {
-      title: t['monitor.list.title.name'],
+      title: '名称',
       dataIndex: 'name',
     },
     {
       dataIndex: 'duration',
-      title: t['monitor.list.title.duration'],
+      title: '时长',
     },
     {
       dataIndex: 'id',
-      title: t['monitor.list.title.id'],
+      title: 'ID',
     },
   ];
   const data = [
@@ -67,9 +64,9 @@ export default function QuickOperation() {
         type="secondary"
         className={styles['data-statistic-list-tip']}
       >
-        {t['monitor.list.tip.rotations']}
+        当前轮播
         {data.length}
-        {t['monitor.list.tip.rest']}
+        条视频
       </Typography.Text>
     </div>
   );

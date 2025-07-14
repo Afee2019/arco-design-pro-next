@@ -13,39 +13,39 @@ export type IRoute = AuthParams & {
 
 export const routes: IRoute[] = [
   {
-    name: 'menu.dashboard',
+    name: '仪表板',
     key: 'dashboard',
     children: [
       {
-        name: 'menu.dashboard.workplace',
+        name: '工作台',
         key: 'dashboard/workplace',
       },
       {
-        name: 'menu.dashboard.monitor',
+        name: '监控页',
         key: 'dashboard/monitor',
         requiredPermissions: [
           { resource: 'menu.dashboard.monitor', actions: ['write'] },
         ],
       },
       {
-        name: 'menu.dashboard.analytics',
+        name: '分析页',
         key: 'dashboard/analytics',
       },
     ],
   },
   {
-    name: 'menu.visualization',
+    name: '数据可视化',
     key: 'visualization',
     children: [
       {
-        name: 'menu.visualization.dataAnalysis',
+        name: '数据分析',
         key: 'visualization/data-analysis',
         requiredPermissions: [
           { resource: 'menu.visualization.dataAnalysis', actions: ['read'] },
         ],
       },
       {
-        name: 'menu.visualization.multiDimensionDataAnalysis',
+        name: '多维数据分析',
         key: 'visualization/multi-dimension-data-analysis',
         requiredPermissions: [
           {
@@ -62,32 +62,32 @@ export const routes: IRoute[] = [
     ],
   },
   {
-    name: 'menu.list',
+    name: '列表页',
     key: 'list',
     children: [
       {
-        name: 'menu.list.searchTable',
+        name: '查询表格',
         key: 'list/search-table',
       },
       {
-        name: 'menu.list.cardList',
+        name: '卡片列表',
         key: 'list/card',
       },
     ],
   },
   {
-    name: 'menu.form',
+    name: '表单页',
     key: 'form',
     children: [
       {
-        name: 'menu.form.group',
+        name: '分组表单',
         key: 'form/group',
         requiredPermissions: [
           { resource: 'menu.form.group', actions: ['read', 'write'] },
         ],
       },
       {
-        name: 'menu.form.step',
+        name: '分步表单',
         key: 'form/step',
         requiredPermissions: [
           { resource: 'menu.form.step', actions: ['read'] },
@@ -96,60 +96,60 @@ export const routes: IRoute[] = [
     ],
   },
   {
-    name: 'menu.profile',
+    name: '详情页',
     key: 'profile',
     children: [
       {
-        name: 'menu.profile.basic',
+        name: '基础详情',
         key: 'profile/basic',
       },
     ],
   },
 
   {
-    name: 'menu.result',
+    name: '结果页',
     key: 'result',
     children: [
       {
-        name: 'menu.result.success',
+        name: '成功页',
         key: 'result/success',
         breadcrumb: false,
       },
       {
-        name: 'menu.result.error',
+        name: '失败页',
         key: 'result/error',
         breadcrumb: false,
       },
     ],
   },
   {
-    name: 'menu.exception',
+    name: '异常页',
     key: 'exception',
     children: [
       {
-        name: 'menu.exception.403',
+        name: '403',
         key: 'exception/403',
       },
       {
-        name: 'menu.exception.404',
+        name: '404',
         key: 'exception/404',
       },
       {
-        name: 'menu.exception.500',
+        name: '500',
         key: 'exception/500',
       },
     ],
   },
   {
-    name: 'menu.user',
+    name: '用户中心',
     key: 'user',
     children: [
       {
-        name: 'menu.user.info',
+        name: '用户信息',
         key: 'user/info',
       },
       {
-        name: 'menu.user.setting',
+        name: '用户设置',
         key: 'user/setting',
       },
     ],

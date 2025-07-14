@@ -9,13 +9,10 @@ import {
   Button,
   Badge,
 } from '@arco-design/web-react';
-import useLocale from '@/utils/useLocale';
-import locale from './locale';
 import axios from 'axios';
 import styles from './style/index.module.less';
 
 function Verified() {
-  const t = useLocale(locale);
   const [data, setData] = useState({
     accountType: '',
     isVerified: true,
@@ -52,9 +49,7 @@ function Verified() {
 
   return (
     <div className={styles.verified}>
-      <Typography.Title heading={6}>
-        {t['userSetting.verified.enterprise']}
-      </Typography.Title>
+      <Typography.Title heading={6}>企业认证</Typography.Title>
       <Descriptions
         className={styles['verified-enterprise']}
         labelStyle={{ textAlign: 'right' }}
@@ -62,14 +57,33 @@ function Verified() {
         colon="："
         column={3}
         data={Object.entries(data).map(([key, value]) => ({
-          label: t[`userSetting.verified.label.${key}`],
+          label:
+            key === 'accountType'
+              ? '账户类型'
+              : key === 'isVerified'
+                ? '认证状态'
+                : key === 'verifiedTime'
+                  ? '认证时间'
+                  : key === 'legalPersonName'
+                    ? '法人姓名'
+                    : key === 'certificateType'
+                      ? '证件类型'
+                      : key === 'certificationNumber'
+                        ? '证件号码'
+                        : key === 'enterpriseName'
+                          ? '企业名称'
+                          : key === 'enterpriseCertificateType'
+                            ? '企业证件类型'
+                            : key === 'organizationCode'
+                              ? '组织代码'
+                              : key,
           value: loading ? (
             loadingNode
           ) : typeof value === 'boolean' ? (
             value ? (
-              <Tag color="green">{t['userSetting.value.verified']}</Tag>
+              <Tag color="green">已认证</Tag>
             ) : (
-              <Tag color="red">{t['userSetting.value.notVerified']}</Tag>
+              <Tag color="red">未认证</Tag>
             )
           ) : (
             value
@@ -77,58 +91,42 @@ function Verified() {
         }))}
       />
 
-      <Typography.Title heading={6}>
-        {t['userSetting.verified.records']}
-      </Typography.Title>
+      <Typography.Title heading={6}>认证记录</Typography.Title>
       <Table
         columns={[
-          { title: t['userSetting.verified.authType'], dataIndex: 'authType' },
+          { title: '认证类型', dataIndex: 'authType' },
           {
-            title: t['userSetting.verified.authContent'],
+            title: '认证内容',
             dataIndex: 'authContent',
           },
           {
-            title: t['userSetting.verified.authStatus'],
+            title: '认证状态',
             dataIndex: 'authStatus',
             render(x) {
               return x ? (
-                <Badge
-                  status="success"
-                  text={t['userSetting.verified.status.success']}
-                ></Badge>
+                <Badge status="success" text="认证成功"></Badge>
               ) : (
                 <span>
-                  <Badge
-                    status="processing"
-                    text={t['userSetting.verified.status.waiting']}
-                  ></Badge>
+                  <Badge status="processing" text="等待认证"></Badge>
                 </span>
               );
             },
           },
           {
-            title: t['userSetting.verified.createdTime'],
+            title: '创建时间',
             dataIndex: 'createdTime',
           },
           {
-            title: t['userSetting.verified.operation'],
+            title: '操作',
             headerCellStyle: { paddingLeft: '15px' },
             render: (_, x) => {
               if (x.authStatus) {
-                return (
-                  <Button type="text">
-                    {t['userSetting.verified.operation.view']}
-                  </Button>
-                );
+                return <Button type="text">查看</Button>;
               }
               return (
                 <Space>
-                  <Button type="text">
-                    {t['userSetting.verified.operation.view']}
-                  </Button>
-                  <Button type="text">
-                    {t['userSetting.verified.operation.revoke']}
-                  </Button>
+                  <Button type="text">查看</Button>
+                  <Button type="text">撤销</Button>
                 </Space>
               );
             },

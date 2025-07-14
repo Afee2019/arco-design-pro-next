@@ -8,8 +8,6 @@ import {
   Link,
 } from '@arco-design/web-react';
 import { IconCamera, IconPlus } from '@arco-design/web-react/icon';
-import useLocale from '@/utils/useLocale';
-import locale from './locale';
 import styles from './style/header.module.less';
 
 export default function Info({
@@ -19,8 +17,6 @@ export default function Info({
   userInfo: Record<string, any>;
   loading: boolean;
 }) {
-  const t = useLocale(locale);
-
   const [avatar, setAvatar] = useState('');
 
   function onAvatarChange(_, file) {
@@ -62,49 +58,49 @@ export default function Info({
         labelStyle={{ textAlign: 'right' }}
         data={[
           {
-            label: t['userSetting.label.name'],
+            label: '用户名',
             value: loading ? loadingNode : userInfo.name,
           },
           {
-            label: t['userSetting.label.verified'],
+            label: '认证状态',
             value: loading ? (
               loadingNode
             ) : (
               <span>
                 {userInfo.verified ? (
                   <Tag color="green" className={styles['verified-tag']}>
-                    {t['userSetting.value.verified']}
+                    已认证
                   </Tag>
                 ) : (
                   <Tag color="red" className={styles['verified-tag']}>
-                    {t['userSetting.value.notVerified']}
+                    未认证
                   </Tag>
                 )}
                 <Link role="button" className={styles['edit-btn']}>
-                  {t['userSetting.btn.edit']}
+                  编辑
                 </Link>
               </span>
             ),
           },
           {
-            label: t['userSetting.label.accountId'],
+            label: '账户ID',
             value: loading ? loadingNode : userInfo.accountId,
           },
           {
-            label: t['userSetting.label.phoneNumber'],
+            label: '手机号码',
             value: loading ? (
               loadingNode
             ) : (
               <span>
                 {userInfo.phoneNumber}
                 <Link role="button" className={styles['edit-btn']}>
-                  {t['userSetting.btn.edit']}
+                  编辑
                 </Link>
               </span>
             ),
           },
           {
-            label: t['userSetting.label.registrationTime'],
+            label: '注册时间',
             value: loading ? loadingNode : userInfo.registrationTime,
           },
         ]}

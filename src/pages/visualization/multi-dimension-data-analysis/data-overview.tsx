@@ -15,14 +15,13 @@ import {
   IconThumbUp,
 } from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
-import locale from './locale';
 import styles from './style/data-overview.module.less';
 import MultiAreaLine from '@/components/Chart/multi-area-line';
 
 const { Title } = Typography;
 export default () => {
   const [isClient, setIsClient] = useState(false);
-  const t = useLocale(locale);
+  const t = useLocale();
   const [overview, setOverview] = useState([]);
   const [lineData, setLineData] = useState([]);
   const [loading, setLoading] = useState(false);

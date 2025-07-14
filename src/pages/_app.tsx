@@ -8,7 +8,6 @@ import { Provider } from 'react-redux';
 import '../style/global.less';
 import { ConfigProvider } from '@arco-design/web-react';
 import zhCN from '@arco-design/web-react/es/locale/zh-CN';
-import enUS from '@arco-design/web-react/es/locale/en-US';
 import axios from 'axios';
 import NProgress from 'nprogress';
 import rootReducer from '../store';
@@ -29,7 +28,6 @@ if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
 const store = createStore(rootReducer);
 
 interface RenderConfig {
-  arcoLang?: string;
   arcoTheme?: string;
 }
 
@@ -38,21 +36,11 @@ export default function MyApp({
   Component,
   renderConfig,
 }: AppProps & { renderConfig: RenderConfig }) {
-  const { arcoLang, arcoTheme } = renderConfig;
-  const [lang, setLang] = useStorage('arco-lang', arcoLang || 'en-US');
+  const { arcoTheme } = renderConfig;
   const [theme, setTheme] = useStorage('arco-theme', arcoTheme || 'light');
   const router = useRouter();
 
-  const locale = useMemo(() => {
-    switch (lang) {
-      case 'zh-CN':
-        return zhCN;
-      case 'en-US':
-        return enUS;
-      default:
-        return enUS;
-    }
-  }, [lang]);
+  const locale = zhCN;
 
   function fetchUserInfo() {
     store.dispatch({
@@ -97,14 +85,11 @@ export default function MyApp({
   }, [router]);
 
   useEffect(() => {
-    document.cookie = `arco-lang=${lang}; path=/`;
     document.cookie = `arco-theme=${theme}; path=/`;
     changeTheme(theme);
-  }, [lang, theme]);
+  }, [theme]);
 
   const contextValue = {
-    lang,
-    setLang,
     theme,
     setTheme,
   };
@@ -154,7 +139,6 @@ MyApp.getInitialProps = async (appContext) => {
   const serverCookies = cookies(ctx);
   return {
     renderConfig: {
-      arcoLang: serverCookies['arco-lang'],
       arcoTheme: serverCookies['arco-theme'],
     },
   };

@@ -8,8 +8,6 @@ import {
   Result,
   Skeleton,
 } from '@arco-design/web-react';
-import useLocale from '@/utils/useLocale';
-import locale from './locale';
 import UserInfoHeader from './header';
 import styles from './style/index.module.less';
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
@@ -23,7 +21,6 @@ import LatestNews from './latest-news';
 const { Title } = Typography;
 const { Row, Col } = Grid;
 function UserInfo() {
-  const t = useLocale(locale);
   const userInfo = useSelector((state: any) => state.userInfo);
   const loading = useSelector((state: any) => state.userLoading);
 
@@ -46,9 +43,9 @@ function UserInfo() {
           <Card className={styles.wrapper}>
             <div className={styles['card-title-wrapper']}>
               <Title heading={6} style={{ marginBottom: '20px' }}>
-                {t['userInfo.title.project']}
+                我的项目
               </Title>
-              <Link>{t['userInfo.btn.more']}</Link>
+              <Link>查看更多</Link>
             </div>
             <MyProject />
           </Card>
@@ -57,7 +54,7 @@ function UserInfo() {
           <Card className={styles.wrapper}>
             <div className={styles['card-title-wrapper']}>
               <Title heading={6} style={{ marginBottom: '12px' }}>
-                {t['userInfo.title.team']}
+                我的团队
               </Title>
             </div>
             <MyTeam />
@@ -69,9 +66,9 @@ function UserInfo() {
           <Card className={styles.wrapper}>
             <div className={styles['card-title-wrapper']}>
               <Title heading={6} style={{ marginBottom: '8px' }}>
-                {t['userInfo.title.news']}
+                最新动态
               </Title>
-              <Link>{t['userInfo.btn.all']}</Link>
+              <Link>查看全部</Link>
             </div>
             <LatestNews />
           </Card>
@@ -79,14 +76,14 @@ function UserInfo() {
         <Col span={8}>
           <Card className={styles.wrapper}>
             <div className={styles['card-title-wrapper']}>
-              <Title heading={6}>{t['userInfo.title.notice']}</Title>
+              <Title heading={6}>消息通知</Title>
             </div>
             {noticeLoading ? (
               <Skeleton text={{ rows: 10 }} animation />
             ) : (
               <Result
                 status="404"
-                subTitle={t['userInfo.notice.empty']}
+                subTitle="暂无消息通知"
                 style={{ paddingTop: '60px', paddingBottom: '130px' }}
               />
             )}

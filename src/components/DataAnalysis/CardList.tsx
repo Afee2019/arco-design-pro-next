@@ -17,8 +17,6 @@ import {
   Tooltip,
 } from 'recharts';
 import axios from 'axios';
-import useLocale from '@/utils/useLocale';
-import locale from '@/pages/visualization/multi-dimension-data-analysis/locale';
 
 import { IconArrowRise, IconArrowFall } from '@arco-design/web-react/icon';
 import styles from '@/pages/visualization/multi-dimension-data-analysis/style/card-block.module.less';
@@ -177,8 +175,17 @@ const cardInfo = [
     type: 'interval',
   },
 ];
+
+function getCardTitle(key: string): string {
+  const titleMap = {
+    userRetentionTrend: '用户留存趋势',
+    userRetention: '用户留存',
+    contentConsumptionTrend: '内容消费趋势',
+    contentConsumption: '内容消费',
+  };
+  return titleMap[key] || key;
+}
 function CardList() {
-  const t = useLocale(locale);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(
     cardInfo.map((item) => ({
@@ -232,9 +239,9 @@ function CardList() {
   const formatData = useMemo(() => {
     return data.map((item) => ({
       ...item,
-      title: t[`multiDAnalysis.cardList.${item.key}`] || item.key,
+      title: getCardTitle(item.key),
     }));
-  }, [t, data]);
+  }, [data]);
 
   return (
     <Row gutter={16}>

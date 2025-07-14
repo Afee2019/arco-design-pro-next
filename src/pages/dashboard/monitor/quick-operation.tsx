@@ -6,28 +6,25 @@ import {
   IconSwap,
   IconTags,
 } from '@arco-design/web-react/icon';
-import useLocale from '@/utils/useLocale';
-import locale from './locale';
 
 export default function QuickOperation() {
-  const t = useLocale(locale);
   return (
     <Card>
       <Typography.Title style={{ marginTop: 0, marginBottom: 16 }} heading={6}>
-        {t['monitor.title.quickOperation']}
+        快捷操作
       </Typography.Title>
       <Space direction="vertical" style={{ width: '100%' }} size={10}>
         <Button long icon={<IconTags />}>
-          {t['monitor.quickOperation.changeClarity']}
+          更改清晰度
         </Button>
         <Button long icon={<IconSwap />}>
-          {t['monitor.quickOperation.switchStream']}
+          切换流
         </Button>
         <Button long icon={<IconStop />}>
-          {t['monitor.quickOperation.removeClarity']}
+          删除清晰度
         </Button>
         <Button long icon={<IconArrowRight />}>
-          {t['monitor.quickOperation.pushFlowGasket']}
+          推流垫片
         </Button>
       </Space>
     </Card>

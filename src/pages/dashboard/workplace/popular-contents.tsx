@@ -2,12 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link, Card, Radio, Table, Typography } from '@arco-design/web-react';
 import { IconCaretDown, IconCaretUp } from '@arco-design/web-react/icon';
 import axios from 'axios';
-import useLocale from '@/utils/useLocale';
-import locale from './locale';
 import styles from './style/popular-contents.module.less';
 
 function PopularContent() {
-  const t = useLocale(locale);
   const [type, setType] = useState(0);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +15,7 @@ function PopularContent() {
     setLoading(true);
     axios
       .get(
-        `/api/workplace/popular-contents?page=${page}&pageSize=5&category=${type}`
+        `/api/workplace/popular-contents?page=${page}&pageSize=5&category=${type}`,
       )
       .then((res) => {
         setData(res.data.list);
@@ -35,12 +32,12 @@ function PopularContent() {
 
   const columns = [
     {
-      title: t['workplace.column.rank'],
+      title: '排名',
       dataIndex: 'rank',
       width: 65,
     },
     {
-      title: t['workplace.column.title'],
+      title: '标题',
       dataIndex: 'title',
       render: (x) => (
         <Typography.Paragraph style={{ margin: 0 }} ellipsis>
@@ -49,7 +46,7 @@ function PopularContent() {
       ),
     },
     {
-      title: t['workplace.column.pv'],
+      title: '查看数',
       dataIndex: 'pv',
       width: 100,
       render: (text) => {
@@ -57,7 +54,7 @@ function PopularContent() {
       },
     },
     {
-      title: t['workplace.column.increase'],
+      title: '增长率',
       dataIndex: 'increase',
       sorter: (a, b) => a.increase - b.increase,
       width: 110,
@@ -81,19 +78,17 @@ function PopularContent() {
   return (
     <Card>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Typography.Title heading={6}>
-          {t['workplace.popularContents']}
-        </Typography.Title>
-        <Link>{t['workplace.seeMore']}</Link>
+        <Typography.Title heading={6}>热门内容</Typography.Title>
+        <Link>查看更多</Link>
       </div>
       <Radio.Group
         type="button"
         value={type}
         onChange={setType}
         options={[
-          { label: t['workplace.text'], value: 0 },
-          { label: t['workplace.image'], value: 1 },
-          { label: t['workplace.video'], value: 2 },
+          { label: '文字', value: 0 },
+          { label: '图片', value: 1 },
+          { label: '视频', value: 2 },
         ]}
         style={{ marginBottom: 16 }}
       />

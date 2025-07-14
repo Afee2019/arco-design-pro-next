@@ -20,7 +20,6 @@ import qs from 'query-string';
 import Navbar from '../components/NavBar';
 import Footer from '../components/Footer';
 import useRoute, { IRoute } from '@/routes';
-import useLocale from '@/utils/useLocale';
 import { GlobalState } from '@/store';
 import getUrlParams from '@/utils/getUrlParams';
 import styles from '@/style/layout.module.less';
@@ -60,7 +59,6 @@ function PageLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = router.pathname;
   const currentComponent = qs.parseUrl(pathname).url.slice(1);
-  const locale = useLocale();
   const userInfo = useSelector((state: GlobalState) => state.userInfo);
   const settings = useSelector((state: GlobalState) => state.settings);
   const userLoading = useSelector((state: GlobalState) => state.userLoading);
@@ -103,7 +101,7 @@ function PageLayout({ children }: { children: ReactNode }) {
   const paddingTop = showNavbar ? { paddingTop: navbarHeight } : {};
   const paddingStyle = { ...paddingLeft, ...paddingTop };
 
-  function renderRoutes(locale) {
+  function renderRoutes() {
     routeMap.current.clear();
     return function travel(_routes: IRoute[], level, parentNode = []) {
       return _routes.map((route) => {
@@ -111,13 +109,13 @@ function PageLayout({ children }: { children: ReactNode }) {
         const iconDom = getIconFromKey(route.key);
         const titleDom = (
           <>
-            {iconDom} {locale[route.name] || route.name}
+            {iconDom} {route.name}
           </>
         );
 
         routeMap.current.set(
           `/${route.key}`,
-          breadcrumb ? [...parentNode, route.name] : []
+          breadcrumb ? [...parentNode, route.name] : [],
         );
 
         const visibleChildren = (route.children || []).filter((child) => {
@@ -125,7 +123,7 @@ function PageLayout({ children }: { children: ReactNode }) {
           if (ignore || route.ignore) {
             routeMap.current.set(
               `/${child.key}`,
-              breadcrumb ? [...parentNode, route.name, child.name] : []
+              breadcrumb ? [...parentNode, route.name, child.name] : [],
             );
           }
 
@@ -213,7 +211,7 @@ function PageLayout({ children }: { children: ReactNode }) {
                     setOpenKeys(openKeys);
                   }}
                 >
-                  {renderRoutes(locale)(routes, 1)}
+                  {renderRoutes()(routes, 1)}
                 </Menu>
               </div>
               <div className={styles['collapse-btn']} onClick={toggleCollapse}>
@@ -228,7 +226,7 @@ function PageLayout({ children }: { children: ReactNode }) {
                   <Breadcrumb>
                     {breadcrumb.map((node, index) => (
                       <Breadcrumb.Item key={index}>
-                        {typeof node === 'string' ? locale[node] || node : node}
+                        {typeof node === 'string' ? node : node}
                       </Breadcrumb.Item>
                     ))}
                   </Breadcrumb>

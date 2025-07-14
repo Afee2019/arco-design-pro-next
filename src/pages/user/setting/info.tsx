@@ -1,7 +1,4 @@
-import React, { useContext } from 'react';
-import useLocale from '@/utils/useLocale';
-import locale from './locale';
-import { GlobalContext } from '@/context';
+import React from 'react';
 import {
   Input,
   Select,
@@ -14,14 +11,12 @@ import {
 } from '@arco-design/web-react';
 
 function InfoForm({ loading }: { loading?: boolean }) {
-  const t = useLocale(locale);
   const [form] = Form.useForm();
-  const { lang } = useContext(GlobalContext);
 
   const handleSave = async () => {
     try {
       await form.validate();
-      Message.success('userSetting.saveSuccess');
+      Message.success('保存成功');
     } catch (_) {}
   };
 
@@ -45,60 +40,47 @@ function InfoForm({ loading }: { loading?: boolean }) {
     <Form
       style={{ width: '500px', marginTop: '6px' }}
       form={form}
-      labelCol={{ span: lang === 'en-US' ? 7 : 6 }}
-      wrapperCol={{ span: lang === 'en-US' ? 17 : 18 }}
+      labelCol={{ span: 6 }}
+      wrapperCol={{ span: 18 }}
     >
       <Form.Item
-        label={t['userSetting.info.email']}
+        label="邮箱地址"
         field="email"
         rules={[
           {
             type: 'email',
             required: true,
-            message: t['userSetting.info.email.placeholder'],
+            message: '请输入正确的邮箱地址',
           },
         ]}
       >
-        {loading ? (
-          loadingNode()
-        ) : (
-          <Input placeholder={t['userSetting.info.email.placeholder']} />
-        )}
+        {loading ? loadingNode() : <Input placeholder="请输入邮箱地址" />}
       </Form.Item>
       <Form.Item
-        label={t['userSetting.info.nickName']}
+        label="昵称"
         field="nickName"
         rules={[
           {
             required: true,
-            message: t['userSetting.info.nickName.placeholder'],
+            message: '请输入昵称',
           },
         ]}
       >
-        {loading ? (
-          loadingNode()
-        ) : (
-          <Input placeholder={t['userSetting.info.nickName.placeholder']} />
-        )}
+        {loading ? loadingNode() : <Input placeholder="请输入昵称" />}
       </Form.Item>
       <Form.Item
-        label={t['userSetting.info.area']}
+        label="地区"
         field="rangeArea"
-        rules={[
-          { required: true, message: t['userSetting.info.area.placeholder'] },
-        ]}
+        rules={[{ required: true, message: '请选择地区' }]}
       >
         {loading ? (
           loadingNode()
         ) : (
-          <Select
-            options={['中国']}
-            placeholder={t['userSetting.info.area.placeholder']}
-          />
+          <Select options={['中国']} placeholder="请选择地区" />
         )}
       </Form.Item>
       <Form.Item
-        label={t['userSetting.info.location']}
+        label="所在城市"
         field="location"
         initialValue={['BeiJing', 'BeiJing', 'HaiDian']}
         rules={[
@@ -144,29 +126,23 @@ function InfoForm({ loading }: { loading?: boolean }) {
           />
         )}
       </Form.Item>
-      <Form.Item label={t['userSetting.info.address']} field="address">
-        {loading ? (
-          loadingNode()
-        ) : (
-          <Input placeholder={t['userSetting.info.address.placeholder']} />
-        )}
+      <Form.Item label="详细地址" field="address">
+        {loading ? loadingNode() : <Input placeholder="请输入详细地址" />}
       </Form.Item>
-      <Form.Item label={t['userSetting.info.profile']} field="profile">
+      <Form.Item label="个人简介" field="profile">
         {loading ? (
           loadingNode(3)
         ) : (
-          <Input.TextArea
-            placeholder={t['userSetting.info.profile.placeholder']}
-          />
+          <Input.TextArea placeholder="请输入个人简介" />
         )}
       </Form.Item>
 
       <Form.Item label=" ">
         <Space>
           <Button type="primary" onClick={handleSave}>
-            {t['userSetting.save']}
+            保存
           </Button>
-          <Button onClick={handleReset}>{t['userSetting.reset']}</Button>
+          <Button onClick={handleReset}>重置</Button>
         </Space>
       </Form.Item>
     </Form>

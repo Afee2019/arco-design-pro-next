@@ -2,37 +2,31 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import cs from 'classnames';
 import { Button } from '@arco-design/web-react';
-import useLocale from '@/utils/useLocale';
-import locale from './locale';
 import styles from './style/index.module.less';
 
 function Security() {
-  const t = useLocale(locale);
-
   const userInfo = useSelector((state: any) => {
     return state.userInfo || {};
   });
 
   const data = [
     {
-      title: t['userSetting.security.password'],
-      value: t['userSetting.security.password.tips'],
+      title: '登录密码',
+      value: '当前密码强度：强',
     },
     {
-      title: t['userSetting.security.question'],
+      title: '密保问题',
       value: '',
-      placeholder: t['userSetting.security.question.placeholder'],
+      placeholder: '请设置密保问题',
     },
     {
-      title: t['userSetting.security.phone'],
-      value: userInfo.phoneNumber
-        ? `${t['userSetting.security.phone.tips']} ${userInfo.phoneNumber}`
-        : '',
+      title: '手机号码',
+      value: userInfo.phoneNumber ? `已绑定手机： ${userInfo.phoneNumber}` : '',
     },
     {
-      title: t['userSetting.security.email'],
+      title: '邮箱地址',
       value: '',
-      placeholder: t['userSetting.security.email.placeholder'],
+      placeholder: '请设置邮箱地址',
     },
   ];
 
@@ -51,11 +45,7 @@ function Security() {
             </span>
 
             <span>
-              <Button type="text">
-                {item.value
-                  ? t['userSetting.btn.edit']
-                  : t['userSetting.btn.set']}
-              </Button>
+              <Button type="text">{item.value ? '修改' : '设置'}</Button>
             </span>
           </div>
         </div>

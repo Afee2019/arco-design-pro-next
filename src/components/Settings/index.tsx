@@ -7,7 +7,6 @@ import { GlobalState } from '../../store';
 import Block from './block';
 import ColorPanel from './color';
 import IconButton from '../NavBar/IconButton';
-import useLocale from '@/utils/useLocale';
 
 interface SettingProps {
   trigger?: React.ReactElement;
@@ -16,12 +15,11 @@ interface SettingProps {
 function Setting(props: SettingProps) {
   const { trigger } = props;
   const [visible, setVisible] = useState(false);
-  const locale = useLocale();
   const settings = useSelector((state: GlobalState) => state.settings);
 
   function onCopySettings() {
     copy(JSON.stringify(settings, null, 2));
-    Message.success(locale['settings.copySettings.message']);
+    Message.success('复制成功，请贴到 src/settings.json 中');
   }
 
   return (
@@ -38,32 +36,32 @@ function Setting(props: SettingProps) {
         title={
           <>
             <IconSettings />
-            {locale['settings.title']}
+            页面配置
           </>
         }
         visible={visible}
-        okText={locale['settings.copySettings']}
-        cancelText={locale['settings.close']}
+        okText="复制配置"
+        cancelText="关闭"
         onOk={onCopySettings}
         onCancel={() => setVisible(false)}
       >
-        <Block title={locale['settings.themeColor']}>
+        <Block title="主题颜色">
           <ColorPanel />
         </Block>
         <Block
-          title={locale['settings.content']}
+          title="内容区域"
           options={[
-            { name: 'settings.navbar', value: 'navbar' },
-            { name: 'settings.menu', value: 'menu' },
-            { name: 'settings.footer', value: 'footer' },
-            { name: 'settings.menuWidth', value: 'menuWidth', type: 'number' },
+            { name: '导航栏', value: 'navbar' },
+            { name: '菜单栏', value: 'menu' },
+            { name: '底部', value: 'footer' },
+            { name: '菜单宽度', value: 'menuWidth', type: 'number' },
           ]}
         />
         <Block
-          title={locale['settings.otherSettings']}
-          options={[{ name: 'settings.colorWeek', value: 'colorWeek' }]}
+          title="其他设置"
+          options={[{ name: '色弱模式', value: 'colorWeek' }]}
         />
-        <Alert content={locale['settings.alertContent']} />
+        <Alert content="配置之后仅对当前页面生效，要想在整个项目中生效，请点击上方按钮复制配置到 src/settings.json 中" />
       </Drawer>
     </>
   );

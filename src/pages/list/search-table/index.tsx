@@ -12,7 +12,6 @@ import { IconDownload, IconPlus } from '@arco-design/web-react/icon';
 import axios from 'axios';
 import useLocale from '@/utils/useLocale';
 import SearchForm from './form';
-import locale from './locale';
 import styles from './style/index.module.less';
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
   import('./mock');
@@ -25,7 +24,7 @@ export const FilterType = ['规则筛选', '人工'];
 export const Status = ['已上线', '未上线'];
 
 function SearchTable() {
-  const t = useLocale(locale);
+  const t = useLocale();
 
   const tableCallback = async (record, type) => {
     console.log(record, type);

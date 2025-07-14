@@ -13,36 +13,32 @@ import {
   IconMobile,
   IconFire,
 } from '@arco-design/web-react/icon';
-import useLocale from '@/utils/useLocale';
-import locale from './locale';
 import styles from './style/shortcuts.module.less';
 
 function Shortcuts() {
-  const t = useLocale(locale);
-
   const shortcuts = [
     {
-      title: t['workplace.contentMgmt'],
+      title: '内容管理',
       key: 'Content Management',
       icon: <IconFile />,
     },
     {
-      title: t['workplace.contentStatistic'],
+      title: '内容统计',
       key: 'Content Statistic',
       icon: <IconStorage />,
     },
     {
-      title: t['workplace.advancedMgmt'],
+      title: '高级管理',
       key: 'Advanced Management',
       icon: <IconSettings />,
     },
     {
-      title: t['workplace.onlinePromotion'],
+      title: '线上推广',
       key: 'Online Promotion',
       icon: <IconMobile />,
     },
     {
-      title: t['workplace.marketing'],
+      title: '营销活动',
       key: 'Marketing',
       icon: <IconFire />,
     },
@@ -50,17 +46,17 @@ function Shortcuts() {
 
   const recentShortcuts = [
     {
-      title: t['workplace.contentStatistic'],
+      title: '内容统计',
       key: 'Content Statistic',
       icon: <IconStorage />,
     },
     {
-      title: t['workplace.contentMgmt'],
+      title: '内容管理',
       key: 'Content Management',
       icon: <IconFile />,
     },
     {
-      title: t['workplace.advancedMgmt'],
+      title: '高级管理',
       key: 'Advanced Management',
       icon: <IconSettings />,
     },
@@ -79,10 +75,8 @@ function Shortcuts() {
   return (
     <Card>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Typography.Title heading={6}>
-          {t['workplace.shortcuts']}
-        </Typography.Title>
-        <Link>{t['workplace.seeMore']}</Link>
+        <Typography.Title heading={6}>快捷方式</Typography.Title>
+        <Link>查看更多</Link>
       </div>
       <div className={styles.shortcuts}>
         {shortcuts.map((shortcut) => (
@@ -97,7 +91,7 @@ function Shortcuts() {
         ))}
       </div>
       <Divider />
-      <div className={styles.recent}>{t['workplace.recent']}</div>
+      <div className={styles.recent}>最近使用</div>
       <div className={styles.shortcuts}>
         {recentShortcuts.map((shortcut) => (
           <div

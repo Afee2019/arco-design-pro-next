@@ -15,12 +15,10 @@ import {
   IconFile,
   IconDesktop,
 } from '@arco-design/web-react/icon';
-import useLocale from '../../utils/useLocale';
 import MessageList, { MessageListType } from './list';
 import styles from './style/index.module.less';
 
 function DropContent() {
-  const t = useLocale();
   const [loading, setLoading] = useState(false);
   const [groupData, setGroupData] = useState<{
     [key: string]: MessageListType;
@@ -57,7 +55,7 @@ function DropContent() {
   useEffect(() => {
     const groupData: { [key: string]: MessageListType } = groupBy(
       sourceData,
-      'type'
+      'type',
     );
     setGroupData(groupData);
   }, [sourceData]);
@@ -65,17 +63,17 @@ function DropContent() {
   const tabList = [
     {
       key: 'message',
-      title: t['message.tab.title.message'],
+      title: '消息',
       titleIcon: <IconMessage />,
     },
     {
       key: 'notice',
-      title: t['message.tab.title.notice'],
+      title: '通知',
       titleIcon: <IconCustomerService />,
     },
     {
       key: 'todo',
-      title: t['message.tab.title.todo'],
+      title: '待办',
       titleIcon: <IconFile />,
       avatar: (
         <Avatar style={{ backgroundColor: '#0FC6C2' }}>
@@ -95,7 +93,7 @@ function DropContent() {
           destroyOnHide
           extra={
             <Button type="text" onClick={() => setSourceData([])}>
-              {t['message.empty']}
+              清空
             </Button>
           }
         >

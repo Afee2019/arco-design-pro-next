@@ -1,28 +1,16 @@
-import { useContext } from 'react';
-import { GlobalContext } from '../context';
-import defaultLocale from '../locale';
+import defaultLocale from '@/locale';
 
-function useLocale(locale = null) {
-  try {
-    const context = useContext(GlobalContext);
-    const lang = context?.lang || 'zh-CN';
-    const localeData = locale || defaultLocale;
+export default function useLocale(locale?: Record<string, string>) {
+  // 只使用中文locale
+  const mergedLocale = {
+    ...defaultLocale['zh-CN'],
+    ...locale,
+  };
 
-    if (!localeData || typeof localeData !== 'object') {
-      return {};
-    }
-
-    const result = localeData[lang] || localeData['zh-CN'] || {};
-
-    if (!result || typeof result !== 'object') {
-      return {};
-    }
-
-    return result;
-  } catch (error) {
-    console.warn('useLocale error:', error);
-    return {};
-  }
+  // 返回一个代理对象，当访问不存在的key时返回key本身
+  return new Proxy(mergedLocale, {
+    get(target, key: string) {
+      return target[key] || key;
+    },
+  });
 }
-
-export default useLocale;

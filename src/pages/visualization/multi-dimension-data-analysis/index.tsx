@@ -5,7 +5,6 @@ import useLocale from '@/utils/useLocale';
 import HorizontalInterval from '@/components/Chart/horizontal-interval';
 import AreaPolar from '@/components/Chart/area-polar';
 import FactMultiPie from '@/components/Chart/fact-multi-pie';
-import locale from './locale';
 import DataOverview from './data-overview';
 import CardList from '@/components/DataAnalysis/CardList';
 
@@ -14,7 +13,7 @@ const { Title } = Typography;
 
 function DataAnalysis() {
   const [isClient, setIsClient] = useState(false);
-  const t = useLocale(locale);
+  const t = useLocale();
   const [loading, setLoading] = useState(false);
   const [interval, setInterval] = useState([]);
   const [polarLoading, setPolarLoading] = useState(false);

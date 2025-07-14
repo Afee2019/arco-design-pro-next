@@ -22,8 +22,6 @@ import {
   IconMore,
 } from '@arco-design/web-react/icon';
 import PermissionWrapper from '@/components/PermissionWrapper';
-import useLocale from '@/utils/useLocale';
-import locale from './locale';
 import { QualityInspection, BasicCard } from './interface';
 import styles from './style/index.module.less';
 
@@ -49,14 +47,13 @@ function CardBlock(props: CardBlockType) {
   const [status, setStatus] = useState(card.status);
   const [loading, setLoading] = useState(props.loading);
 
-  const t = useLocale(locale);
   const changeStatus = async () => {
     setLoading(true);
     await new Promise((resolve) =>
       setTimeout(() => {
         setStatus(status !== 1 ? 1 : 0);
         resolve(null);
-      }, 1000)
+      }, 1000),
     ).finally(() => setLoading(false));
   };
 
@@ -95,7 +92,7 @@ function CardBlock(props: CardBlockType) {
               style={{ marginLeft: '12px' }}
               loading={loading}
             >
-              {t['cardList.options.qualityInspection']}
+              质量检查
             </Button>
           </PermissionWrapper>
 
@@ -104,7 +101,7 @@ function CardBlock(props: CardBlockType) {
               { resource: /^menu.list.*/, actions: ['write'] },
             ]}
           >
-            <Button loading={loading}>{t['cardList.options.remove']}</Button>
+            <Button loading={loading}>移除</Button>
           </PermissionWrapper>
         </>
       );
@@ -115,13 +112,11 @@ function CardBlock(props: CardBlockType) {
         <>
           {status === 1 ? (
             <Button loading={loading} onClick={changeStatus}>
-              {t['cardList.options.cancel']}
+              取消
             </Button>
           ) : (
             <Button type="outline" loading={loading} onClick={changeStatus}>
-              {status === 0
-                ? t['cardList.options.subscribe']
-                : t['cardList.options.renewal']}
+              {status === 0 ? '订阅' : '续费'}
             </Button>
           )}
         </>
@@ -142,7 +137,7 @@ function CardBlock(props: CardBlockType) {
           className={styles.status}
           size="small"
         >
-          {t['cardList.tag.activated']}
+          已激活
         </Tag>
       );
     }
@@ -155,7 +150,7 @@ function CardBlock(props: CardBlockType) {
             className={styles.status}
             size="small"
           >
-            {t['cardList.tag.opened']}
+            已开启
           </Tag>
         );
       case 2:
@@ -166,7 +161,7 @@ function CardBlock(props: CardBlockType) {
             className={styles.status}
             size="small"
           >
-            {t['cardList.tag.expired']}
+            已过期
           </Tag>
         );
       default:

@@ -1,46 +1,42 @@
 import React from 'react';
 import { Typography, Result, Button, Link } from '@arco-design/web-react';
 import { IconLink } from '@arco-design/web-react/icon';
-import useLocale from '@/utils/useLocale';
-import locale from './locale';
 import styles from './style/index.module.less';
 
 function Success() {
-  const t = useLocale(locale);
-
   return (
     <div>
       <div className={styles.wrapper}>
         <Result
           className={styles.result}
           status="error"
-          title={t['error.result.title']}
-          subTitle={t['error.result.subTitle']}
+          title="提交失败"
+          subTitle="请检查信息后重新提交"
           extra={[
             <Button key="again" type="secondary" style={{ marginRight: 16 }}>
-              {t['error.result.goBack']}
+              返回上一步
             </Button>,
             <Button key="back" type="primary">
-              {t['error.result.retry']}
+              重新提交
             </Button>,
           ]}
         />
         <div className={styles['details-wrapper']}>
           <Typography.Title heading={6} style={{ marginTop: 0 }}>
-            {t['error.detailTitle']}
+            错误详情
           </Typography.Title>
           <Typography.Paragraph style={{ marginBottom: 0 }}>
             <ol>
               <li>
-                {t['error.detailLine.record']}
+                您的账户已被冻结，请联系管理员
                 <Link>
                   <IconLink />
-                  {t['error.detailLine.record.link']}
+                  立即解冻
                 </Link>
               </li>
               <li>
-                {t['error.detailLine.auth']}
-                <Link>{t['error.detailLine.auth.link']}</Link>
+                您的账户还未完成实名认证
+                <Link>立即认证</Link>
               </li>
             </ol>
           </Typography.Paragraph>

@@ -9,11 +9,8 @@ import {
   Tooltip,
 } from 'recharts';
 import axios from 'axios';
-import useLocale from '@/utils/useLocale';
-import locale from './locale';
 
 function PopularContent() {
-  const t = useLocale(locale);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -37,9 +34,7 @@ function PopularContent() {
 
   return (
     <Card>
-      <Typography.Title heading={6}>
-        {t['workplace.contentPercentage']}
-      </Typography.Title>
+      <Typography.Title heading={6}>内容分布</Typography.Title>
       <Spin loading={loading} style={{ display: 'block' }}>
         <div style={{ position: 'relative' }}>
           <ResponsiveContainer width="100%" height={340}>

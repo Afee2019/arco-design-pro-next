@@ -1,13 +1,10 @@
 import React from 'react';
 import { Typography, Card, Grid } from '@arco-design/web-react';
-import useLocale from '@/utils/useLocale';
 
 const { Row, Col } = Grid;
 const { Title } = Typography;
 
 function Analytics() {
-  const t = useLocale();
-
   return (
     <div>
       <Title heading={6}>数据分析</Title>

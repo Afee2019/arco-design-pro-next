@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react';
 import { Switch, Divider, InputNumber } from '@arco-design/web-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { GlobalState } from '../../store';
-import useLocale from '../../utils/useLocale';
 import styles from './style/block.module.less';
 
 export interface BlockProps {
@@ -13,7 +12,6 @@ export interface BlockProps {
 
 export default function Block(props: BlockProps) {
   const { title, options, children } = props;
-  const locale = useLocale();
   const settings = useSelector((state: GlobalState) => state.settings);
   const dispatch = useDispatch();
 
@@ -26,7 +24,21 @@ export default function Block(props: BlockProps) {
 
           return (
             <div className={styles['switch-wrapper']} key={option.value}>
-              <span>{locale[option.name]}</span>
+              <span>
+                {option.name === 'settings.navbar'
+                  ? '导航栏'
+                  : option.name === 'settings.menu'
+                    ? '菜单'
+                    : option.name === 'settings.footer'
+                      ? '底部'
+                      : option.name === 'settings.themeColor'
+                        ? '主题色'
+                        : option.name === 'settings.colorWeek'
+                          ? '色弱模式'
+                          : option.name === 'settings.menuWidth'
+                            ? '菜单宽度'
+                            : option.name}
+              </span>
               {type === 'switch' && (
                 <Switch
                   size="small"

@@ -11,8 +11,6 @@ import { useSelector } from 'react-redux';
 import { IconCaretUp } from '@arco-design/web-react/icon';
 import OverviewAreaLine from '@/components/Chart/overview-area-line';
 import axios from 'axios';
-import locale from './locale';
-import useLocale from '@/utils/useLocale';
 import styles from './style/overview.module.less';
 import IconCalendar from './assets/calendar.svg';
 import IconComments from './assets/comments.svg';
@@ -59,7 +57,6 @@ type DataType = {
 function Overview() {
   const [data, setData] = useState<DataType>({});
   const [loading, setLoading] = useState(true);
-  const t = useLocale(locale);
 
   const userInfo = useSelector((state: any) => state.userInfo || {});
 
@@ -82,7 +79,7 @@ function Overview() {
   return (
     <Card>
       <Typography.Title heading={5}>
-        {t['workplace.welcomeBack']}
+        欢迎回来，
         {userInfo.name}
       </Typography.Title>
       <Divider />
@@ -90,37 +87,37 @@ function Overview() {
         <Col flex={1}>
           <StatisticItem
             icon={<IconCalendar />}
-            title={t['workplace.totalOnlyData']}
+            title="全部内容"
             count={data.allContents}
             loading={loading}
-            unit={t['workplace.pecs']}
+            unit="篇"
           />
         </Col>
         <Divider type="vertical" className={styles.divider} />
         <Col flex={1}>
           <StatisticItem
             icon={<IconContent />}
-            title={t['workplace.contentInMarket']}
+            title="在线内容"
             count={data.liveContents}
             loading={loading}
-            unit={t['workplace.pecs']}
+            unit="篇"
           />
         </Col>
         <Divider type="vertical" className={styles.divider} />
         <Col flex={1}>
           <StatisticItem
             icon={<IconComments />}
-            title={t['workplace.comments']}
+            title="新增评论"
             count={data.increaseComments}
             loading={loading}
-            unit={t['workplace.pecs']}
+            unit="篇"
           />
         </Col>
         <Divider type="vertical" className={styles.divider} />
         <Col flex={1}>
           <StatisticItem
             icon={<IconIncrease />}
-            title={t['workplace.growth']}
+            title="增长率"
             count={
               <span>
                 {data.growthRate}{' '}
@@ -140,12 +137,10 @@ function Overview() {
             className={styles['chart-title']}
             style={{ marginBottom: 0 }}
           >
-            {t['workplace.contentData']}
-            <span className={styles['chart-sub-title']}>
-              ({t['workplace.1year']})
-            </span>
+            内容数据
+            <span className={styles['chart-sub-title']}>(最近一年)</span>
           </Typography.Paragraph>
-          <Link>{t['workplace.seeMore']}</Link>
+          <Link>查看更多</Link>
         </div>
         <OverviewAreaLine data={data.chartData} loading={loading} />
       </div>

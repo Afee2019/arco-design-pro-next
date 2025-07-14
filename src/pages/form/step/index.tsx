@@ -13,13 +13,10 @@ import {
   Switch,
   Result,
 } from '@arco-design/web-react';
-import useLocale from '@/utils/useLocale';
-import locale from './locale';
 import styles from './style/index.module.less';
 
 const { Title, Paragraph } = Typography;
 function StepForm() {
-  const t = useLocale(locale);
   const [current, setCurrent] = useState(1);
 
   const [form] = Form.useForm();
@@ -44,56 +41,45 @@ function StepForm() {
   return (
     <div className={styles.container}>
       <Card>
-        <Title heading={5}>{t['stepForm.desc.basicInfo']}</Title>
+        <Title heading={5}>基本信息</Title>
         <div className={styles.wrapper}>
           <Steps current={current} lineless>
-            <Steps.Step
-              title={t['stepForm.title.basicInfo']}
-              description={t['stepForm.desc.basicInfo']}
-            />
-            <Steps.Step
-              title={t['stepForm.title.channel']}
-              description={t['stepForm.desc.channel']}
-            />
-            <Steps.Step
-              title={t['stepForm.title.created']}
-              description={t['stepForm.desc.created']}
-            />
+            <Steps.Step title="基本信息" description="基本信息" />
+            <Steps.Step title="渠道信息" description="渠道信息" />
+            <Steps.Step title="完成" description="完成" />
           </Steps>
           <Form form={form} className={styles.form}>
             {current === 1 && (
               <Form.Item noStyle>
                 <Form.Item
-                  label={t['stepForm.basicInfo.name']}
+                  label="名称"
                   required
                   field="basic.name"
                   rules={[
                     {
                       required: true,
-                      message: t['stepForm.basicInfo.name.required'],
+                      message: '请输入名称',
                     },
                     {
                       validator: (value: string, callback) => {
                         if (!/^[\u4e00-\u9fa5a-zA-Z0-9]{1,20}$/g.test(value)) {
-                          callback(t['stepForm.basicInfo.name.placeholder']);
+                          callback('请输入正确的名称格式');
                         }
                       },
                     },
                   ]}
                 >
-                  <Input
-                    placeholder={t['stepForm.basicInfo.name.placeholder']}
-                  />
+                  <Input placeholder="请输入名称" />
                 </Form.Item>
                 <Form.Item
-                  label={t['stepForm.basicInfo.channelType']}
+                  label="渠道类型"
                   required
                   initialValue="app"
                   field="basic.channelType"
                   rules={[
                     {
                       required: true,
-                      message: t['stepForm.basicInfo.channelType.required'],
+                      message: '请选择渠道类型',
                     },
                   ]}
                 >
@@ -104,66 +90,60 @@ function StepForm() {
                   </Select>
                 </Form.Item>
                 <Form.Item
-                  label={t['stepForm.basicInfo.time']}
+                  label="有效时间"
                   required
                   field="basic.time"
                   rules={[
                     {
                       required: true,
-                      message: t['stepForm.basicInfo.time.required'],
+                      message: '请选择有效时间',
                     },
                   ]}
                 >
                   <DatePicker.RangePicker style={{ width: '100%' }} />
                 </Form.Item>
                 <Form.Item
-                  label={t['stepForm.basicInfo.link']}
+                  label="链接"
                   required
-                  extra={t['stepForm.basicInfo.link.tips']}
+                  extra="请输入完整的链接地址"
                   field="basic.link"
                   initialValue={'https://arco.design'}
                   rules={[{ required: true }]}
                 >
-                  <Input
-                    placeholder={t['stepForm.basicInfo.link.placeholder']}
-                  />
+                  <Input placeholder="请输入链接地址" />
                 </Form.Item>
               </Form.Item>
             )}
             {current === 2 && (
               <Form.Item noStyle>
                 <Form.Item
-                  label={t['stepForm.channel.source']}
+                  label="渠道来源"
                   required
                   field="channel.source"
                   rules={[
                     {
                       required: true,
-                      message: t['stepForm.channel.source.required'],
+                      message: '请输入渠道来源',
                     },
                   ]}
                 >
-                  <Input
-                    placeholder={t['stepForm.channel.source.placeholder']}
-                  />
+                  <Input placeholder="请输入渠道来源" />
                 </Form.Item>
                 <Form.Item
-                  label={t['stepForm.channel.media']}
+                  label="媒体来源"
                   required
                   field="channel.media"
                   rules={[
                     {
                       required: true,
-                      message: t['stepForm.channel.media.required'],
+                      message: '请输入媒体来源',
                     },
                   ]}
                 >
-                  <Input
-                    placeholder={t['stepForm.channel.media.placeholder']}
-                  />
+                  <Input placeholder="请输入媒体来源" />
                 </Form.Item>
                 <Form.Item
-                  label={t['stepForm.channel.keywords']}
+                  label="关键词"
                   required
                   field="channel.keywords"
                   initialValue={['今日头条', '火山']}
@@ -172,7 +152,7 @@ function StepForm() {
                   <InputTag />
                 </Form.Item>
                 <Form.Item
-                  label={t['stepForm.channel.remind']}
+                  label="提醒设置"
                   required
                   initialValue={true}
                   field="channel.remind"
@@ -183,19 +163,17 @@ function StepForm() {
                 </Form.Item>
 
                 <Form.Item
-                  label={t['stepForm.channel.content']}
+                  label="内容说明"
                   required
                   field="channel.content"
                   rules={[
                     {
                       required: true,
-                      message: t['stepForm.channel.content.required'],
+                      message: '请输入内容说明',
                     },
                   ]}
                 >
-                  <Input.TextArea
-                    placeholder={t['stepForm.channel.content.placeholder']}
-                  />
+                  <Input.TextArea placeholder="请输入内容说明" />
                 </Form.Item>
               </Form.Item>
             )}
@@ -207,12 +185,12 @@ function StepForm() {
                       size="large"
                       onClick={() => setCurrent(current - 1)}
                     >
-                      {t['stepForm.prev']}
+                      上一步
                     </Button>
                   )}
                   {current !== 3 && (
                     <Button type="primary" size="large" onClick={toNext}>
-                      {t['stepForm.next']}
+                      下一步
                     </Button>
                   )}
                 </Space>
@@ -221,18 +199,18 @@ function StepForm() {
               <Form.Item noStyle>
                 <Result
                   status="success"
-                  title={t['stepForm.created.success.title']}
-                  subTitle={t['stepForm.created.success.desc']}
+                  title="创建成功"
+                  subTitle="您的渠道已经创建成功"
                   extra={[
                     <Button
                       key="reset"
                       style={{ marginRight: 16 }}
                       onClick={viewForm}
                     >
-                      {t['stepForm.created.success.view']}
+                      查看表单
                     </Button>,
                     <Button key="again" type="primary" onClick={reCreateForm}>
-                      {t['stepForm.created.success.again']}
+                      再次创建
                     </Button>,
                   ]}
                 />
@@ -242,10 +220,10 @@ function StepForm() {
         </div>
         {current === 3 && (
           <div className={styles['form-extra']}>
-            <Title heading={6}>{t['stepForm.created.extra.title']}</Title>
+            <Title heading={6}>更多信息</Title>
             <Paragraph type="secondary">
-              {t['stepForm.created.extra.desc']}
-              <Button type="text">{t['stepForm.created.extra.detail']}</Button>
+              您可以在这里查看更多相关信息。
+              <Button type="text">查看详情</Button>
             </Paragraph>
           </div>
         )}

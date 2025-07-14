@@ -11,7 +11,6 @@ import {
   Button,
 } from '@arco-design/web-react';
 import {
-  IconLanguage,
   IconNotification,
   IconSunFill,
   IconMoonFill,
@@ -28,23 +27,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { GlobalState } from '@/store';
 import { switchRole } from '@/store/actions';
 import { GlobalContext } from '@/context';
-import useLocale from '@/utils/useLocale';
 import Logo from '@/assets/logo.svg';
 import MessageBox from '@/components/MessageBox';
 import IconButton from './IconButton';
 import Settings from '../Settings';
 import styles from './style/index.module.less';
-import defaultLocale from '@/locale';
 import useStorage from '@/utils/useStorage';
 
 function Navbar({ show }: { show: boolean }) {
-  const t = useLocale();
   const userInfo = useSelector((state: GlobalState) => state.userInfo);
   const userLoading = useSelector((state: GlobalState) => state.userLoading);
   const dispatch = useDispatch();
 
   const [, setUserStatus] = useStorage('userStatus');
-  const { setLang, lang, theme, setTheme } = useContext(GlobalContext);
+  const { theme, setTheme } = useContext(GlobalContext);
 
   function logout() {
     setUserStatus('logout');
@@ -84,45 +80,43 @@ function Navbar({ show }: { show: boolean }) {
           <>
             <IconUser className={styles['dropdown-icon']} />
             <span className={styles['user-role']}>
-              {userInfo?.role === 'admin'
-                ? t['menu.user.role.admin']
-                : t['menu.user.role.user']}
+              {userInfo?.role === 'admin' ? '管理员' : '普通用户'}
             </span>
           </>
         }
       >
         <Menu.Item onClick={handleSwitchRole} key="switch role">
           <IconTag className={styles['dropdown-icon']} />
-          {t['menu.user.switchRoles']}
+          切换角色
         </Menu.Item>
       </Menu.SubMenu>
       <Menu.Item key="setting">
         <IconSettings className={styles['dropdown-icon']} />
-        {t['menu.user.setting']}
+        个人设置
       </Menu.Item>
       <Menu.SubMenu
         key="more"
         title={
           <div style={{ width: 80 }}>
             <IconExperiment className={styles['dropdown-icon']} />
-            {t['message.seeMore']}
+            查看更多
           </div>
         }
       >
         <Menu.Item key="workplace">
           <IconDashboard className={styles['dropdown-icon']} />
-          {t['menu.dashboard.workplace']}
+          工作台
         </Menu.Item>
         <Menu.Item key="card list">
           <IconInteraction className={styles['dropdown-icon']} />
-          {t['menu.list.cardList']}
+          卡片列表
         </Menu.Item>
       </Menu.SubMenu>
 
       <Divider style={{ margin: '4px 0' }} />
       <Menu.Item key="logout">
         <IconPoweroff className={styles['dropdown-icon']} />
-        {t['navbar.logout']}
+        退出登录
       </Menu.Item>
     </Menu>
   );
@@ -137,31 +131,7 @@ function Navbar({ show }: { show: boolean }) {
       </div>
       <ul className={styles.right}>
         <li>
-          <Input.Search
-            className={styles.round}
-            placeholder={t['navbar.search.placeholder']}
-          />
-        </li>
-        <li>
-          <Select
-            triggerElement={<IconButton icon={<IconLanguage />} />}
-            options={[
-              { label: '中文', value: 'zh-CN' },
-              { label: 'English', value: 'en-US' },
-            ]}
-            value={lang}
-            triggerProps={{
-              autoAlignPopupWidth: false,
-              autoAlignPopupMinWidth: true,
-              position: 'br',
-            }}
-            trigger="hover"
-            onChange={(value) => {
-              setLang(value);
-              const nextLang = defaultLocale[value];
-              Message.info(`${nextLang['message.lang.tips']}${value}`);
-            }}
-          />
+          <Input.Search className={styles.round} placeholder="搜索" />
         </li>
         <li>
           <MessageBox>
@@ -171,9 +141,7 @@ function Navbar({ show }: { show: boolean }) {
         <li>
           <Tooltip
             content={
-              theme === 'light'
-                ? t['settings.navbar.theme.toDark']
-                : t['settings.navbar.theme.toLight']
+              theme === 'light' ? '点击切换为暗黑模式' : '点击切换为亮色模式'
             }
           >
             <IconButton

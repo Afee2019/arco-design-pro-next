@@ -6,61 +6,52 @@ import {
   Space,
   Descriptions,
 } from '@arco-design/web-react';
-import useLocale from '@/utils/useLocale';
-import locale from './locale';
 
 export default function StudioStatus() {
-  const t = useLocale(locale);
   const dataStatus = [
     {
       label: (
         <span>
-          <Typography.Text style={{ paddingRight: 8 }}>
-            {t['monitor.studioStatus.mainstream']}
-          </Typography.Text>
-          {t['monitor.studioStatus.bitRate']}
+          <Typography.Text style={{ paddingRight: 8 }}>主流</Typography.Text>
+          码率
         </span>
       ),
       value: '6 Mbps',
     },
     {
-      label: t['monitor.studioStatus.frameRate'],
+      label: '帧率',
       value: '60',
     },
     {
       label: (
         <span>
-          <Typography.Text style={{ paddingRight: 8 }}>
-            {t['monitor.studioStatus.hotStandby']}
-          </Typography.Text>
-          {t['monitor.studioStatus.bitRate']}
+          <Typography.Text style={{ paddingRight: 8 }}>热备</Typography.Text>
+          码率
         </span>
       ),
       value: '6 Mbps',
     },
     {
-      label: t['monitor.studioStatus.frameRate'],
+      label: '帧率',
       value: '60',
     },
     {
       label: (
         <span>
-          <Typography.Text style={{ paddingRight: 8 }}>
-            {t['monitor.studioStatus.coldStandby']}
-          </Typography.Text>
-          {t['monitor.studioStatus.bitRate']}
+          <Typography.Text style={{ paddingRight: 8 }}>冷备</Typography.Text>
+          码率
         </span>
       ),
       value: '6 Mbps',
     },
     {
-      label: t['monitor.studioStatus.frameRate'],
+      label: '帧率',
       value: '60',
     },
   ];
   const dataPicture = [
     {
-      label: t['monitor.studioStatus.line'],
+      label: '线路',
       value: '热备',
     },
     {
@@ -68,11 +59,11 @@ export default function StudioStatus() {
       value: 'KS',
     },
     {
-      label: t['monitor.studioStatus.play'],
+      label: '播放',
       value: 'FLV',
     },
     {
-      label: t['monitor.studioStatus.pictureQuality'],
+      label: '画质',
       value: '原画',
     },
   ];
@@ -84,9 +75,9 @@ export default function StudioStatus() {
           style={{ marginTop: 0, marginBottom: 16 }}
           heading={6}
         >
-          {t['monitor.studioStatus.title.studioStatus']}
+          工作台状态
         </Typography.Title>
-        <Tag color="green">{t['monitor.studioStatus.smooth']}</Tag>
+        <Tag color="green">正常</Tag>
       </Space>
       <Descriptions
         colon=": "
@@ -95,7 +86,7 @@ export default function StudioStatus() {
         column={2}
       />
       <Typography.Title style={{ marginBottom: 16 }} heading={6}>
-        {t['monitor.studioStatus.title.pictureInfo']}
+        画面信息
       </Typography.Title>
       <Descriptions
         colon=": "
